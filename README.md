@@ -1,6 +1,6 @@
 <p align="center"><img src="https://github.com/conifer0us/skPOS/blob/main/server/images/logoDark.svg"></p>
 
-<h1 align="center" style="border-bottom: none;">skPOS: Sub King's Own Point of Sale Software</h1>
+<h1 align="center" style="border-bottom: 0px solid black;">skPOS: Sub King's Own Point of Sale Software</h1>
 <br />
 
 # Backend
