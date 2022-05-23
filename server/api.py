@@ -28,7 +28,7 @@ def developerSignIn():
 	if request.method == 'GET':
 		return render_template("developerlogin.html")
 	if request.method == 'POST':
-		if request.form["uname"] + ":" + hash(request.form["pwd"], salt=salt) + "\n" in open("admin_pass.db", "r").readlines():
+		if request.form["uname"] + ":" + hash(request.form["pwd"], salt=salt) + "\n" in open("admin_login.db", "r").readlines():
 			newCookieVal = getrandbits(64)
 			createCookie(newCookieVal)
 			resp = make_response(redirect("/adminpanel", 200))
@@ -57,11 +57,11 @@ def hash(information : str, salt : str) -> str:
 	str2hash = information + salt
 	return hashlib.md5(str2hash.encode()).hexdigest()
 
-# Creates the "admin_pass.db" file to store an admin username and password if not already created
+# Creates the "admin_login.db" file to store an admin username and password if not already created
 def addAdminLogin():
 	admin_user = input("Enter Admin Username: ")
 	admin_password = input("Enter Admin Password: ")
-	with open("admin_pass.db", "a") as adminFile:
+	with open("admin_login.db", "a") as adminFile:
 		adminFile.write(admin_user + ":" + hash(admin_password, salt=salt)+"\n")
 
 # Checks if a specific request was sent by an already logged in admin user
@@ -80,7 +80,7 @@ def createCookie(val):
 # Runs the Flask Application on Port 443 
 if __name__ == "__main__":
 	import sys
-	if not exists("admin_pass.db"):
+	if not exists("admin_login.db"):
 		addAdminLogin()
 	if len(sys.argv) < 2:
 		from waitress import serve
