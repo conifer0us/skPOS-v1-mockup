@@ -3,8 +3,8 @@
 <h3 align="center">skPOS: Sub King's Own Point of Sale Software</h3>
 <br />
 
-# Backend
-
+### Backend
+---
 The backend server for SKPOS is written in python using flask. To create a production quality wsgi server, the waitress library is used.
 Authentication is handled with admin usernames and passwords. At least one set of credentials is stored when the server is first loaded. 
 Passwords are hashed with a predefined salt that can be changed before the server is initialized. This salt is defined as a constant in the flask application.
