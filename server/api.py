@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, make_response, redirect, render_template, request, send_file
 import hashlib
 from os.path import exists
+from random import getrandbits
 
 # Change to Alter Password Salt. Admin accounts will lose access if this is done with passwords already set.
 salt = "naohoinvoaisouaoiweniojfoihas88920903"
@@ -11,6 +12,9 @@ app_port = 443
 # Basic Flask Application Creation
 app = Flask(__name__)
 
+# Creates Non-Persistent Admin Cookie Storage (hashed with salt)
+adminCookies = []
+
 # Returns a Basic skPOS Welcome Page
 @app.route("/", methods=['GET'])
 def appInformation():
@@ -19,12 +23,24 @@ def appInformation():
 # Provides a Developer Login Page (Secured by Admin Username and Password configured at the outset of the sysytem)
 @app.route("/developerlogin", methods=['GET', 'POST'])
 def developerSignIn():
+	if isAdmin(request):
+		return redirect("/adminpanel")
 	if request.method == 'GET':
 		return render_template("developerlogin.html")
 	if request.method == 'POST':
 		if request.form["uname"] + ":" + hash(request.form["pwd"], salt=salt) + "\n" in open("admin_pass.db", "r").readlines():
-			return "Password Accepted"
-		return "Password Rejected"
+			newCookieVal = getrandbits(64)
+			createCookie(newCookieVal)
+			resp = make_response(redirect("/adminpanel", 200))
+			resp.set_cookie("login", str(newCookieVal))
+			return resp
+		return redirect("/developerlogin", 302)
+
+@app.route("/adminpanel", methods=['GET'])
+def returnAdminPanel():
+	if isAdmin(request):
+		return "Successful Admin Login"
+	return redirect("/developerlogin", 302)
 
 # Returns a png representation of the SKPOS Logo
 @app.route("/logoDark.png", methods=['GET'])
@@ -33,7 +49,7 @@ def returnDarkLogoSvg():
 
 # Registers an Ordering Device (Possible from the Developer Dashboard)
 @app.route("/registerOrderDevice", methods=['GET', 'POST'])
-def postRegisterDeveloper(): 
+def registerOrderDevice(): 
 	return ""
 
 # Returns a string representation of the md5 hash of a supplied input string when combined with a salt string
@@ -47,6 +63,19 @@ def addAdminLogin():
 	admin_password = input("Enter Admin Password: ")
 	with open("admin_pass.db", "a") as adminFile:
 		adminFile.write(admin_user + ":" + hash(admin_password, salt=salt)+"\n")
+
+# Checks if a specific request was sent by an already logged in admin user
+def isAdmin(req : request):
+	cookieval = req.cookies.get("login")
+	if cookieval is None:
+		return False
+	elif hash(str(cookieval), salt=salt) in adminCookies:
+		return True
+	return False
+
+# Adds a value as a valid cookie
+def createCookie(val):
+	adminCookies.append(hash(str(val), salt=salt))
 
 # Runs the Flask Application on Port 443 
 if __name__ == "__main__":
