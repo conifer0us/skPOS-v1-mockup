@@ -39,7 +39,7 @@ def developerSignIn():
 @app.route("/adminpanel", methods=['GET'])
 def returnAdminPanel():
 	if isAdmin(request):
-		return "Successful Admin Login"
+		return render_template("adminpanel.html")
 	return redirect("/developerlogin", 302)
 
 # Returns a png representation of the SKPOS Logo
@@ -48,7 +48,7 @@ def returnDarkLogoSvg():
 	return send_file("./images/logoDark.png", mimetype='image/png')
 
 # Registers an Ordering Device (Possible from the Developer Dashboard)
-@app.route("/registerOrderDevice", methods=['GET', 'POST'])
+@app.route("/registerOrderDevice", methods=['POST'])
 def registerOrderDevice(): 
 	return ""
 
