@@ -20,14 +20,14 @@ adminCookies = []
 def appInformation():
 	return "Welcome to skPOS"
 
-# Provides a Developer Login Page (Secured by Admin Username and Password configured at the outset of the sysytem)
+# Provides a Developer Login Page (Secured by Admin Username and Password configured at system initialization)
 @app.route("/developerlogin", methods=['GET', 'POST'])
 def developerSignIn():
 	if isAdmin(request):
 		return redirect("/adminpanel")
-	if request.method == 'GET':
+	elif request.method == 'GET':
 		return render_template("developerlogin.html")
-	if request.method == 'POST':
+	elif request.method == 'POST':
 		if request.form["uname"] + ":" + hash(request.form["pwd"], salt=salt) + "\n" in open("admin_login.db", "r").readlines():
 			newCookieVal = getrandbits(64)
 			createCookie(newCookieVal)
