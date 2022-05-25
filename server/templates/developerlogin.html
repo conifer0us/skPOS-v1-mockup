@@ -50,12 +50,15 @@ button:hover {
 }
 </style>
 <script>
+  // Function runs on page load to ensure that form runs custom submitLoginInfo function on submission
   function init() {
     document.getElementById("loginform").onsubmit = submitLoginInfo;
   }
 
   window.onload = init;
 
+  // Function to Handle Login Form Submission (Sends POST Request and handles redirects/messages depending on response code)
+  // Function considers 200 codes successful login attempts and 401 codes unauthorized access. Any other codes produce an error message alert
   function submitLoginInfo() {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/developerlogin"); 
@@ -63,7 +66,7 @@ button:hover {
       statusCode = event.target.status; 
       if (statusCode > 199 && statusCode < 300) {
         window.location.href = "/adminpanel";
-      } else if (statusCode > 299 && statusCode < 401) {
+      } else if (statusCode == 401) {
         alert("Incorrect Login Information");
       } else {
         alert("Something went wrong. Try logging in again. Status: " + statusCode.toString())

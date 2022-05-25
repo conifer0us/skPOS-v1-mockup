@@ -34,8 +34,9 @@ def developerSignIn():
 			resp = make_response("Accepted", 200)
 			resp.set_cookie("login", str(newCookieVal))
 			return resp
-		return "Denied", 302
+		return "Denied", 401
 
+# Returns the adminpanel HTML file; Must have a valid login cookie to visit this page
 @app.route("/adminpanel", methods=['GET'])
 def returnAdminPanel():
 	if isAdmin(request):
@@ -45,12 +46,23 @@ def returnAdminPanel():
 # Returns a png representation of the SKPOS Logo
 @app.route("/logoDark.png", methods=['GET'])
 def returnDarkLogoSvg():
-	return send_file("./images/logoDark.png", mimetype='image/png')
+	return send_file("./images/logoDark.png", mimetype='image/png'), 200
 
 # Registers an Ordering Device (Possible from the Developer Dashboard)
 @app.route("/registerOrderDevice", methods=['POST'])
 def registerOrderDevice(): 
 	return ""
+
+# Removes all valid login cookies and forces admins to log back in
+@app.route("/adminlogout", methods=["POST"])
+def logOutAdmin():
+	if not isAdmin(request):
+		return "", 401
+	global adminCookies
+	adminCookies = []
+	resp = make_response("", 200)
+	resp.delete_cookie("login")
+	return resp
 
 # Returns a string representation of the md5 hash of a supplied input string when combined with a salt string
 def hash(information : str, salt : str) -> str:
