@@ -31,10 +31,10 @@ def developerSignIn():
 		if request.form["uname"] + ":" + hash(request.form["pwd"], salt=salt) + "\n" in open("admin_login.db", "r").readlines():
 			newCookieVal = getrandbits(64)
 			createCookie(newCookieVal)
-			resp = make_response(redirect("/adminpanel", 200))
+			resp = make_response("Accepted", 200)
 			resp.set_cookie("login", str(newCookieVal))
 			return resp
-		return redirect("/developerlogin", 302)
+		return "Denied", 302
 
 @app.route("/adminpanel", methods=['GET'])
 def returnAdminPanel():

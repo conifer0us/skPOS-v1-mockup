@@ -49,9 +49,34 @@ button:hover {
   padding: 16px;
 }
 </style>
+<script>
+  function init() {
+    document.getElementById("loginform").onsubmit = submitLoginInfo;
+  }
+
+  window.onload = init;
+
+  function submitLoginInfo() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/developerlogin"); 
+    xhr.onload = function(event){
+      statusCode = event.target.status; 
+      if (statusCode > 199 && statusCode < 300) {
+        window.location.href = "/adminpanel";
+      } else if (statusCode > 299 && statusCode < 401) {
+        alert("Incorrect Login Information");
+      } else {
+        alert("Something went wrong. Try logging in again. Status: " + statusCode.toString())
+      }
+    }; 
+    var formData = new FormData(document.getElementById("loginform")); 
+    xhr.send(formData);
+    return false;
+  }
+</script>
 </head>
 <body>
-    <form action="/developerlogin" method="post">
+    <form id="loginform">
         <div class="imgcontainer">
           <img src="logoDark.png" class="skpos" />
         </div>
