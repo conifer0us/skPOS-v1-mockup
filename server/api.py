@@ -16,7 +16,7 @@ app = Flask(__name__)
 adminCookies = []
 
 # Returns a Basic skPOS Welcome Page
-@app.route("/", methods=['GET'])
+@app.route("/servertest", methods=['GET'])
 def appInformation():
 	return "Welcome to skPOS"
 
