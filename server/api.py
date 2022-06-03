@@ -1,3 +1,4 @@
+import json
 from flask import Flask, make_response, redirect, render_template, request, send_file
 import hashlib
 from os.path import exists
@@ -18,7 +19,7 @@ adminCookies = []
 # Returns a Basic skPOS Welcome Page
 @app.route("/servertest", methods=['GET'])
 def appInformation():
-	return "Welcome to skPOS"
+	return json.dump({"message": "Welcome to skPOS"}), 200
 
 # Provides a Developer Login Page (Secured by Admin Username and Password configured at system initialization)
 @app.route("/developerlogin", methods=['GET', 'POST'])

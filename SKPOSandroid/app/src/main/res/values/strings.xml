@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SKPOS-android</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
+    <!-- Fragment Strings -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="count_button_text">Increment</string>
@@ -11,4 +11,10 @@
     <string name="previous">Previous</string>
     <string name="hello_first_fragment">Value: 0</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <!-- App-Important Configuration Strings -->
+    <string name="access_key_file_name">AccessStringFileName</string>
+    <string name="access_key_pref_key">SecretAccessKey</string>
+    <string name="port_pref_key">ServerPort</string>
+    <string name="IP_pref_key">ServerIP</string>
 </resources>
