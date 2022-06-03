@@ -5,19 +5,22 @@ import android.content.Context
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.RequestFuture
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-class ConnectionHandler(appContext : Context) {
+class ConnectionHandler(appContext : Context, currentActivity : Activity) {
     private val settingsManagerObject : SettingsManager
     private val requestQueue : RequestQueue
+    private val activityObject : Activity
 
     init {
         settingsManagerObject = SettingsManager(appContext)
         requestQueue = Volley.newRequestQueue(appContext)
+        activityObject = currentActivity
     }
 
     private fun getServerPort() : Int{
@@ -35,7 +38,7 @@ class ConnectionHandler(appContext : Context) {
     // A method that uses volley to send synchronous HTTP(S) requests
     fun synchronousRequest(uri : String, method : String = "GET", data : String = "", authenticate : Boolean = true) : HttpResponse {
         val httpmethod : Int = httpMethodFromString(method)
-        val url : String = "%s/%s".format(getServerIP(), uri)
+        val url : String = "%s/%s".format(getServerIP(), stripSlashes(uri))
         val bodyJSON : JSONObject = buildBodyText(data, authenticate)
         var statusCode : Int = 600 //Assume Network Fail, future.get() calls the parseNetworkResponse function if successful, which will change the status code
         var responseJSON : JSONObject?
@@ -66,8 +69,8 @@ class ConnectionHandler(appContext : Context) {
 
     // A method that leverages Volley to send an Asynchronous HTTP(S) request with specified methods to execute when the connection is completed or fails
     fun asyncRequest(uri : String, method : String = "GET", data : String = "", authenticate : Boolean = true,
-                     onCompletion: (resp : JSONObject?) -> Boolean, onFailure: (errormsg : String?) -> Boolean, activityObject : Activity) {
-        val url : String = "%s/%s".format(getServerIP(), uri)
+                     onCompletion: (resp : JSONObject?) -> Boolean, onFailure: (errormsg : String?) -> Boolean) {
+        val url : String = "%s/%s".format(getServerIP(), stripSlashes(uri))
         val httpmethod : Int = httpMethodFromString(method)
         val bodyJSON : JSONObject = buildBodyText(data, authenticate)
         val jsonReq = JsonObjectRequest(
@@ -79,7 +82,7 @@ class ConnectionHandler(appContext : Context) {
     }
 
     fun isServerUp() : Boolean {
-        val testConnection = synchronousRequest(uri = "servertest", authenticate = false)
+        val testConnection = synchronousRequest(uri = "/servertest", authenticate = false)
         if (testConnection.status() in 200..299) {
             return true
         }
@@ -87,11 +90,20 @@ class ConnectionHandler(appContext : Context) {
     }
 
     fun isDeviceConnected() : Boolean {
+        val future : RequestFuture<String> = RequestFuture.newFuture()
+        val stringReq = StringRequest(Request.Method.GET, "https://google.com/", future, future)
+        requestQueue.add(stringReq)
 
-    }
-
-    fun isDeviceRegistered() : Boolean {
-
+        return try {
+            future.get(30, TimeUnit.SECONDS)
+            true
+        } catch (e : InterruptedException) {
+            false
+        } catch (e : ExecutionException) {
+            false
+        } catch(e : TimeoutException) {
+            false
+        }
     }
 
     private fun httpMethodFromString(methodString : String) : Int {
@@ -126,5 +138,9 @@ class ConnectionHandler(appContext : Context) {
             data.put("cookie", cookie)
         }
         return data
+    }
+
+    private fun stripSlashes(input : String) : String {
+        return input.replace("/", "")
     }
 }
