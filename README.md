@@ -10,7 +10,7 @@ Web authentication is handled with admin usernames and passwords (which set a co
 Passwords are hashed with a predefined salt that can be changed before the server is initialized. This salt is defined as a constant in the flask application.
 Administrators who successfully login will be redirected to the admin dashboard where they will be able to register new ordering devices. This should be done on the phone to ensure easy QR code scanning.
 
-## API Endpoints
+#### API Endpoints
 
 * /servertest : Returns JSON data with the "message" key set to "Welcome to skPOS" and a status code of 200. Useful for testing if the server is available or not
     * Request Types Accepted: GET
