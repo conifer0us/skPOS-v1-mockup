@@ -35,75 +35,40 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
         return settingsManagerObject.getAccessKey()
     }
 
-    // A method that uses volley to send synchronous HTTP(S) requests
-    fun synchronousRequest(uri : String, method : String = "GET", data : String = "", authenticate : Boolean = true) : HttpResponse {
-        val httpmethod : Int = httpMethodFromString(method)
-        val url : String = "%s/%s".format(getServerIP(), stripSlashes(uri))
-        val bodyJSON : JSONObject = buildBodyText(data, authenticate)
-        var statusCode : Int = 600 //Assume Network Fail, future.get() calls the parseNetworkResponse function if successful, which will change the status code
-        var responseJSON : JSONObject?
-
-        val future : RequestFuture<JSONObject> = RequestFuture.newFuture()
-        val jsonReq : JsonObjectRequest = object : JsonObjectRequest(httpmethod, url, bodyJSON, future, future){
-            override fun parseNetworkResponse(response: NetworkResponse?): Response<JSONObject> {
-                statusCode = response!!.statusCode
-                return super.parseNetworkResponse(response)
-            }
-        }
-        requestQueue.add(jsonReq)
-
-        try {
-            responseJSON = future.get(30, TimeUnit.SECONDS)
-        } catch (e : InterruptedException) {
-            responseJSON = JSONObject()
-            responseJSON.put("err", e.message)
-        } catch (e : ExecutionException) {
-            responseJSON = JSONObject()
-            responseJSON.put("err", e.message)
-        } catch(e : TimeoutException) {
-            responseJSON = JSONObject()
-            responseJSON.put("err", e.message)
-        }
-        return HttpResponse(responseJSON, statusCode)
-    }
-
     // A method that leverages Volley to send an Asynchronous HTTP(S) request with specified methods to execute when the connection is completed or fails
-    fun asyncRequest(uri : String, method : String = "GET", data : String = "", authenticate : Boolean = true,
+    fun asyncRequest(uri : String, dest : String? = null, port : Int = -1, method : String = "GET", data : String = "", authenticate : Boolean = true,
                      onCompletion: (resp : JSONObject?) -> Boolean, onFailure: (errormsg : String?) -> Boolean) {
-        val url : String = "%s/%s".format(getServerIP(), stripSlashes(uri))
+        var dest = dest
+        var port = port
+        if (dest == null) {
+            dest = getServerIP()
+        }
+        if (port == -1) {
+            port = getServerPort()
+        }
+        val url : String = "%s%s%s".format(dest, formatURI(uri), formatPort(port))
         val httpmethod : Int = httpMethodFromString(method)
         val bodyJSON : JSONObject = buildBodyText(data, authenticate)
-        val jsonReq = JsonObjectRequest(
+        val jsonReq : JsonObjectRequest = object : JsonObjectRequest(
             httpmethod, url, bodyJSON,
             { response ->  activityObject.runOnUiThread {onCompletion(response)} },
             { error -> activityObject.runOnUiThread {onFailure(error.message)} }
-        )
+        ) {
+            override fun parseNetworkResponse(response: NetworkResponse?): Response<JSONObject> {
+                val resp = super.parseNetworkResponse(response)
+                resp.result!!.put("statusCode", response!!.statusCode)
+                return resp
+            }
+        }
         requestQueue.add(jsonReq)
     }
 
-    fun isServerUp() : Boolean {
-        val testConnection = synchronousRequest(uri = "/servertest", authenticate = false)
-        if (testConnection.status() in 200..299) {
-            return true
-        }
-        return false
+    fun isServerUp(onCompletion: (resp: JSONObject?) -> Boolean, onFailure: (errormsg: String?) -> Boolean) {
+        asyncRequest(uri = "/servertest", authenticate = false, onCompletion = onCompletion, onFailure = onFailure)
     }
 
-    fun isDeviceConnected() : Boolean {
-        val future : RequestFuture<String> = RequestFuture.newFuture()
-        val stringReq = StringRequest(Request.Method.GET, "https://google.com/", future, future)
-        requestQueue.add(stringReq)
-
-        return try {
-            future.get(30, TimeUnit.SECONDS)
-            true
-        } catch (e : InterruptedException) {
-            false
-        } catch (e : ExecutionException) {
-            false
-        } catch(e : TimeoutException) {
-            false
-        }
+    fun isDeviceConnected(onCompletion: (resp: JSONObject?) -> Boolean, onFailure: (errormsg: String?) -> Boolean) {
+        asyncRequest(uri = "", dest = "https://google.com", port = -2, authenticate = false, onCompletion = onCompletion, onFailure = onFailure)
     }
 
     private fun httpMethodFromString(methodString : String) : Int {
@@ -127,7 +92,7 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
     }
 
     private fun buildBodyText(data : String, authenticate : Boolean) : JSONObject {
-        var dataJSON = JSONObject()
+        val dataJSON = JSONObject()
         dataJSON.put("body", data)
         return buildBodyText(dataJSON, authenticate)
     }
@@ -140,7 +105,20 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
         return data
     }
 
-    private fun stripSlashes(input : String) : String {
-        return input.replace("/", "")
+    private fun formatURI(input : String) : String {
+        var input = input
+        if (input.isNotEmpty() && ! input.startsWith("/")) {
+            input = "/$input"
+        }
+        return input
+    }
+
+    private fun formatPort(input : Int) : String {
+        var input = input
+        return if (input < 0) {
+            ""
+        } else {
+            ":$input"
+        }
     }
 }

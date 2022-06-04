@@ -42,7 +42,12 @@ class FirstFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.toast_button).setOnClickListener {
-            val myToast = Toast.makeText(context, "Toast Text!", Toast.LENGTH_SHORT)
+            val network : ConnectionHandler = ConnectionHandler(requireContext(), requireActivity())
+            val myToast = if (network.isDeviceConnected()) {
+                Toast.makeText(context, "Network Connected!", Toast.LENGTH_SHORT)
+            } else {
+                Toast.makeText(context, "Network Not Connected", Toast.LENGTH_SHORT)
+            }
             myToast.show()
         }
 
