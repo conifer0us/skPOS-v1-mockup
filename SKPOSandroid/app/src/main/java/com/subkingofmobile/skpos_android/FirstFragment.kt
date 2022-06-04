@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.subkingofmobile.skpos_android.databinding.FragmentFirstBinding
+import org.json.JSONObject
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -34,6 +35,7 @@ class FirstFragment : Fragment() {
 
     }
 
+    @SuppressLint("CutPasteId", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -42,13 +44,13 @@ class FirstFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.toast_button).setOnClickListener {
-            val network : ConnectionHandler = ConnectionHandler(requireContext(), requireActivity())
-            val myToast = if (network.isDeviceConnected()) {
-                Toast.makeText(context, "Network Connected!", Toast.LENGTH_SHORT)
-            } else {
-                Toast.makeText(context, "Network Not Connected", Toast.LENGTH_SHORT)
-            }
-            myToast.show()
+            val network = ConnectionHandler(requireContext(), requireActivity())
+            network.isDeviceConnected(
+                {resp -> Toast.makeText(context, "Network Connected!", Toast.LENGTH_SHORT).show()
+                    view.findViewById<TextView>(R.id.textview_first).text = "Value: ${resp!!.getInt("statusCode")}"
+                },
+                {errormsg -> val txtview = view.findViewById<TextView>(R.id.textview_first); txtview.textSize = 41f; txtview.text = errormsg }
+            )
         }
 
         view.findViewById<Button>(R.id.count_button).setOnClickListener {
