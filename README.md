@@ -24,6 +24,9 @@ Administrators who successfully login will be redirected to the admin dashboard 
 * /logoDark.png : Returns the full skPOS logo
     * Request Types Accepted: GET
     * Authentication Required: No
+* /favicon.ico : Returns the skPOS Favicon
+    * Request Types Accepted: GET
+    * Authentication Required: No
 * /adminlogout : Removes all admin cookies from nonpersistent storage and redirects the current admin back to the developerlogin page
     * Request Types Accepted: GET
     * Authentication Required: Yes (Must have a valid admin cookie set to log out all administrators)

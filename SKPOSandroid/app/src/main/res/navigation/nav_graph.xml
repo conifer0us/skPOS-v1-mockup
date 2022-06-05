@@ -25,4 +25,8 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.subkingofmobile.skpos_android.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

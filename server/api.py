@@ -49,6 +49,10 @@ def returnAdminPanel():
 def returnDarkLogoSvg():
 	return send_file("./images/logoDark.png", mimetype='image/png'), 200
 
+@app.route("/favicon.ico", methods=["GET"])
+def returnFavicon():
+	return send_file("./images/favicon.ico", mimetype='image/vnd.microsoft.icon'), 200
+
 # Registers an Ordering Device (Possible from the Developer Dashboard)
 @app.route("/registerOrderDevice", methods=['POST'])
 def registerOrderDevice(): 

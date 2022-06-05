@@ -9,10 +9,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.subkingofmobile.skpos_android.databinding.FragmentFirstBinding
-import org.json.JSONObject
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
