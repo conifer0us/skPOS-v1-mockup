@@ -1,5 +1,5 @@
 import json
-from flask import Flask, make_response, redirect, render_template, request, send_file
+from flask import Flask, jsonify, make_response, redirect, render_template, request, send_file
 import hashlib
 from os.path import exists
 from random import getrandbits
@@ -19,7 +19,7 @@ adminCookies = []
 # Returns a Basic skPOS Welcome Page
 @app.route("/servertest", methods=['GET'])
 def appInformation():
-	return json.dump({"message": "Welcome to skPOS"}), 200
+	return jsonify({"message": "Welcome to skPOS"}), 200
 
 # Provides a Developer Login Page (Secured by Admin Username and Password configured at system initialization)
 @app.route("/developerlogin", methods=['GET', 'POST'])
