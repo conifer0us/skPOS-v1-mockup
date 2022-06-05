@@ -1,34 +1,33 @@
 <resources>
-    <string name="app_name">SKPOS-android</string>
+    <string name="app_name">SKPOS</string>
     <string name="action_settings">Settings</string>
-    <!-- Fragment Strings -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="count_button_text">Increment</string>
-    <string name="toast_button_text">Toast</string>
-    <string name="random_button_text">Random</string>
-    <string name="next_button_text">Next</string>
-    <string name="previous">Previous</string>
-    <string name="hello_first_fragment">Value: 0</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
-    <!-- App-Important Configuration Strings -->
+    <!-- Fragment Labels -->
+    <string name="StartMenuLabel">SKPOS Home</string>
+    <string name="SettingsLabel">Settings</string>
+
+    <!-- StartMenu Fragment Strings -->
+    <string name="WelcomeText">Welcome to the SKPOS Ordering System</string>
+    <string name="ConfigCheckingText">Checking Device Configuration...</string>
+
+    <!-- App-Important Configuration Strings for the SettingsManager Class-->
     <string name="access_key_file_name">AccessStringFileName</string>
     <string name="access_key_pref_key">SecretAccessKey</string>
     <string name="port_pref_key">ServerPort</string>
     <string name="IP_pref_key">ServerIP</string>
-    <!-- Preference Titles -->
+
+    <!-- Settings Strings -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
     <string name="reply_title">Default reply action</string>
 
-    <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <!-- Image Content Description Values -->
+    <string name="logoContentDescription">SKPOS Logo</string>
 </resources>
