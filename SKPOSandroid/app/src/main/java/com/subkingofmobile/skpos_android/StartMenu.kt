@@ -51,7 +51,7 @@ class StartMenu : Fragment() {
     }
 
     private fun displayDevLaziness() {
-        val devLazinessDisplay = Toast.makeText(context, "OOPS! The dev hasn't implemented this feature yet! How Lazy of Him!", Toast.LENGTH_LONG)
+        val devLazinessDisplay = Toast.makeText(context, "OOPS! The dev hasn't implemented this feature yet! How Lazy of Him!", Toast.LENGTH_SHORT)
         devLazinessDisplay.show()
     }
 
