@@ -9,7 +9,11 @@
         android:id="@+id/StartMenu"
         android:name="com.subkingofmobile.skpos_android.StartMenu"
         android:label="@string/StartMenuLabel"
-        tools:layout="@layout/start_menu"/>
+        tools:layout="@layout/start_menu">
+        <action
+            android:id="@+id/action_StartMenu_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.subkingofmobile.skpos_android.SettingsFragment"

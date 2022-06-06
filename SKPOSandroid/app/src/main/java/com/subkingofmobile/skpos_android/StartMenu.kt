@@ -33,15 +33,30 @@ class StartMenu : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.findViewById<Button>(R.id.NewOrderButton).setOnClickListener {
+            displayDevLaziness()
+        }
 
+        view.findViewById<Button>(R.id.UnfinishedOrderButton).setOnClickListener {
+            displayDevLaziness()
+        }
+
+        view.findViewById<Button>(R.id.PreviousOrderButton).setOnClickListener {
+            displayDevLaziness()
+        }
+
+        view.findViewById<Button>(R.id.SettingsButton).setOnClickListener {
+            findNavController().navigate(R.id.action_StartMenu_to_settingsFragment)
+        }
+    }
+
+    private fun displayDevLaziness() {
+        val devLazinessDisplay = Toast.makeText(context, "OOPS! The dev hasn't implemented this feature yet! How Lazy of Him!", Toast.LENGTH_LONG)
+        devLazinessDisplay.show()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun changeConfigurationText(newText : String) {
-        binding.
     }
 }

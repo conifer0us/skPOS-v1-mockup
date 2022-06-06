@@ -22,23 +22,58 @@
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="50dp"
         android:text="@string/WelcomeText"
         android:textColor="@color/black"
         android:textSize="35sp"
+        app:layout_constraintBottom_toTopOf="@+id/NewOrderButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
-    <TextView
-        android:id="@+id/configText"
+    <Button
+        android:id="@+id/NewOrderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/ConfigCheckingText"
-        android:textColor="@color/black"
-        android:textSize="35sp"
+        android:text="@string/NewOrderButtonText"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/UnfinishedOrderButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
+
+    <Button
+        android:id="@+id/UnfinishedOrderButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/UnfinishedOrderButtonText"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/PreviousOrderButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NewOrderButton" />
+
+    <Button
+        android:id="@+id/PreviousOrderButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PreviousOrderButtonText"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/SettingsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UnfinishedOrderButton" />
+
+    <Button
+        android:id="@+id/SettingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="@string/SettingsButtonText"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PreviousOrderButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

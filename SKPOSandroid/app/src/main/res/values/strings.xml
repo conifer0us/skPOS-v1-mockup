@@ -30,4 +30,8 @@
 
     <!-- Image Content Description Values -->
     <string name="logoContentDescription">SKPOS Logo</string>
+    <string name="NewOrderButtonText">Start New Order</string>
+    <string name="UnfinishedOrderButtonText">Unfinished Orders</string>
+    <string name="PreviousOrderButtonText">Previously Sent Orders</string>
+    <string name="SettingsButtonText">Device Settings</string>
 </resources>
