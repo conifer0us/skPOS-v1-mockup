@@ -3,13 +3,14 @@ package com.subkingofmobile.skpos_android
 import android.content.Context
 import kotlin.random.Random
 import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 
 class SettingsManager(applicationContext : Context) {
     private val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
     private val sharedPreferencesHandle : SharedPreferences
 
     init {
-        sharedPreferencesHandle = applicationContext.getSharedPreferences(getFileKey(), Context.MODE_PRIVATE)
+        sharedPreferencesHandle = PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }
 
     fun setServerIP(serverIP : String) {

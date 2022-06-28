@@ -11,11 +11,12 @@
         android:label="@string/StartMenuLabel"
         tools:layout="@layout/start_menu">
         <action
-            android:id="@+id/action_StartMenu_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            android:id="@+id/action_StartMenu_to_settingsContainerScreen"
+            app:destination="@id/settingsContainerScreen" />
     </fragment>
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.subkingofmobile.skpos_android.SettingsFragment"
-        android:label="@string/SettingsLabel" />
+        android:id="@+id/settingsContainerScreen"
+        android:name="com.subkingofmobile.skpos_android.SettingsContainerScreen"
+        android:label="@string/SettingsLabel"
+        tools:layout="@layout/fragment_settings_container_screen" />
 </navigation>

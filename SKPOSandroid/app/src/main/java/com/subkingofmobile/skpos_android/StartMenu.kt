@@ -46,7 +46,7 @@ class StartMenu : Fragment() {
         }
 
         view.findViewById<Button>(R.id.SettingsButton).setOnClickListener {
-            findNavController().navigate(R.id.action_StartMenu_to_settingsFragment)
+            findNavController().navigate(R.id.action_StartMenu_to_settingsContainerScreen)
         }
     }
 
