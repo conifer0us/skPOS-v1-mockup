@@ -3,12 +3,67 @@
     <head>
         <!-- Imports Signika Font from Google Fonts-->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Signika">
+        
+        <!--Import QRCode Scanning Library-->
+        <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
         <style>
             h1 {
                 font-family: "Signika", sans-serif;
             }
             button {
                 font-family: "Signika", sans-serif;
+            }
+            hr {
+                width: 60%; 
+                left: 20%;
+            }
+            #device-registration-container{
+                position: relative;
+            }
+            #registerDeviceButton{
+                border: 1px solid black; 
+                position: relative; 
+                padding: 5px; 
+                font-size: 30px; 
+                border-radius: 25px; 
+                margin-bottom: 20px;
+                margin-top: 20px; 
+                left: 50%; 
+                -ms-transform: translateX(-50%); 
+                transform: translateX(-50%); 
+                background-color: #9aff71;
+            }
+            #TitleText{
+                height: 100%;
+                font-size: 50px;
+            }
+            #TitleImage{
+                height: 50%; 
+                margin:auto;
+            }
+            #ClearAdminButton{
+                position: fixed; 
+                border: 1px solid black; 
+                border-radius: 10px; 
+                background-color: #d8d8d8; 
+                bottom: 20px; 
+                font-size: large; 
+                right: 20px; 
+                margin: 5px;
+            }
+            #TitleDiv{
+                padding: 10px;
+                height: 100px; 
+                width: calc(100% - 20px); 
+                text-align: center; 
+                vertical-align: middle;
+            }
+            #dummy-qr-scanner {
+                position: relative; 
+                left: 50%; 
+                transform: translateX(-50%);
+                -ms-transform: translateX(-50%);
+                max-width: 50%;
             }
         </style>
         <script>
@@ -22,14 +77,63 @@
                 }; 
                 xhr.send();
             }
+
+            function registerDeviceCode(deviceID) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/registerOrderDevice", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function(){
+                    if (this.readyState != 4) {
+                        return;
+                    }
+                    else if (this.status == 200) {
+                        alert("Your Device has been Registered!");
+                    } else {
+                        alert("Error:" + JSON.parse(this.responseText)["err"]);
+                    }
+                };
+                xhr.send(JSON.stringify({"deviceID": deviceID}))
+            }
+
+            function documentLoad() {
+                
+            }
+
+            function startScanningForDevices() {
+                const ScannerElement = "dummy-qr-scanner";
+
+                onScanSuccess = function(decodedText, decodedResult) {
+                    const deviceID = decodedText;
+                    if (confirm(`Register device with ID ${deviceID.slice(0, 10) + "..."}`)) {
+                        registerDeviceCode(decodedText);
+                        QRScanner.stop()
+                    }
+                }
+
+                onScanFailure = function(error) {
+                    console.log(`Error: ${error}`);
+                }
+
+                let QRScanner = new Html5QrcodeScanner(
+                    ScannerElement,
+                    {fps : 10, qrbox: {width: 250, height: 250}},
+                    false
+                )
+                QRScanner.render(onScanSuccess, onScanFailure)
+            }
         </script>
     </head>
-    <body>
-        <div style="padding: 10px; height: 100px; width: calc(100% - 20px); text-align: center; vertical-align: middle;"> 
-            <h1 style="height: 100%; font-size: 50px;">Welcome to Your <img style="height: 50%; margin:auto;" src="/logoDark.png"> Admin Panel</h1>
+    <body onload="documentLoad()">
+        <div id="TitleDiv"> 
+            <h1 id="TitleText">Welcome to Your <img id="TitleImage" src="/logoDark.png"> Admin Panel</h1>
         </div>
-        <hr style="width: 60%; left: 20%;">
-        
-        <button style="position: absolute; border: 1px solid black; border-radius: 10px; background-color: #d8d8d8; bottom: 20px; font-size: large; right: 20px; margin: 5px;" onclick="adminLogOut()"> Log Out of All<br>Admin Accounts </button>
+        <hr>
+       
+        <div id="device-registration-container">
+            <button id="registerDeviceButton" onclick="startScanningForDevices()">Register a Device</button>
+            <div id="dummy-qr-scanner" > </div>
+        </div>
+
+        <button id="ClearAdminButton" onclick="adminLogOut()"> Log Out of All<br>Admin Accounts </button>
     </body>
 </html>
