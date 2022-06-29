@@ -60,6 +60,17 @@ def returnDarkLogoSvg():
 def returnFavicon():
 	return send_file("./images/favicon.ico", mimetype='image/vnd.microsoft.icon'), 200
 
+# Removes all valid login cookies and forces admins to log back in
+@app.route("/adminlogout", methods=["POST"])
+def logOutAdmin():
+	if not isAdmin(request):
+		return "", 401
+	global adminCookies
+	adminCookies = []
+	resp = make_response("", 200)
+	resp.delete_cookie("login")
+	return resp
+
 # Registers an Ordering Device (Possible from the Developer Dashboard)
 @app.route("/registerOrderDevice", methods=['POST'])
 def registerOrderDevice(): 
@@ -74,16 +85,15 @@ def registerOrderDevice():
 		addOrderingDeviceToDB(submittedDeviceID)
 		return "", 200
 
-# Removes all valid login cookies and forces admins to log back in
-@app.route("/adminlogout", methods=["POST"])
-def logOutAdmin():
-	if not isAdmin(request):
-		return "", 401
-	global adminCookies
-	adminCookies = []
-	resp = make_response("", 200)
-	resp.delete_cookie("login")
-	return resp
+## API ENDPOINTS FROM HERE ON ARE USED BY ORDERING DEVICES, NOT THE ADMIN PANEL ##
+
+# Checks if the device being used to send the request is registered or not. A registered device will have the "deviceID" key set to a valid ID in the request's JSON body
+@app.route("/checkDeviceRegistration", methods=["POST"])
+def checkDeviceRegistration():
+	if (isRegisteredDevice(request)):
+		return "Device is Registered!", 200
+	else:
+		return "Your Device has not been Registered", 200 
 
 # Returns a string representation of the md5 hash of a supplied input string when combined with a salt string
 def hash(information : str, salt : str) -> str:

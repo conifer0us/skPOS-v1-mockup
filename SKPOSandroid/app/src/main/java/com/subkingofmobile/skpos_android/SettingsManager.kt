@@ -13,14 +13,6 @@ class SettingsManager(applicationContext : Context) {
         sharedPreferencesHandle = PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }
 
-    fun setServerIP(serverIP : String) {
-        writeKeyValue(R.string.IP_pref_key.toString(), serverIP)
-    }
-
-    fun setServerPort(serverPort : Int) {
-        writeKeyValue(R.string.port_pref_key.toString(), serverPort)
-    }
-
     fun getAccessKey() : String? {
         if (! keyExists(R.string.access_key_pref_key.toString())) {
             val randomString = generateRandomString(256)
@@ -35,10 +27,6 @@ class SettingsManager(applicationContext : Context) {
 
     fun getServerPort() : Int {
         return getNumFromKey(R.string.port_pref_key.toString())
-    }
-
-    fun accessKeyExists() : Boolean {
-        return keyExists(R.string.access_key_pref_key.toString())
     }
 
     fun getValFromKey(key : String) : String? {

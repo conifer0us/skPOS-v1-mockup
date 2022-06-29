@@ -10,7 +10,7 @@ Web authentication is handled with admin usernames and passwords (which set a co
 Passwords are hashed with a predefined salt that can be changed before the server is initialized. This salt is defined as a constant in the flask application.
 Administrators who successfully login will be redirected to the admin dashboard where they will be able to register new ordering devices. This should be done on the phone to ensure easy QR code scanning.
 
-#### API Endpoints
+#### API Endpoints Used by the Web Panel
 
 * /servertest : Returns JSON data with the "message" key set to "Welcome to skPOS" and a status code of 200. Useful for testing if the server is available or not
     * Request Types Accepted: GET
@@ -30,3 +30,16 @@ Administrators who successfully login will be redirected to the admin dashboard 
 * /adminlogout : Removes all admin cookies from nonpersistent storage and redirects the current admin back to the developerlogin page
     * Request Types Accepted: GET
     * Authentication Required: Yes (Must have a valid admin cookie set to log out all administrators)
+* /registerOrderDevice : Registers an ordering device with the server by adding a hashed device ID to the file that tracks device IDs
+    * Request Types Accepted: POST
+    * Request Requirements: Request body must be in JSON format with the "deviceID" key set to a String with length 256
+    * Return Details: Returns a blank string with status code 200 if successful. Otherwise, returns a JSON object with the "err" key set to the details of the problem
+    * Authentication Required: Yes (Must have a valid admin cookie set)
+
+#### API Endpoints Used by Ordering Devices
+
+* /checkDeviceRegistration : Checks if a device with a certain ID has been registered with the server using the registerOrderDevice endpoint
+    * Request Types Accepted: POST
+    * Request Requirements: Request body must be in JSON format with the "deviceID" key set to a String that stores the device ID
+    * Return Details: Returns a simple string with a message describing if the device has been registered
+    * Authentication Required: No
