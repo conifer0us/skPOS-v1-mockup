@@ -44,6 +44,14 @@ class SettingsContainerScreen : Fragment() {
         imgView!!.setImageBitmap(Bitmap.createScaledBitmap(imgBM, 750, 750, false).trimBorders(Color.WHITE))
     }
 
+    private fun checkServerConnection() {
+
+    }
+
+    private fun checkDeviceRegistration() {
+
+    }
+
     private fun Bitmap.trimBorders(color: Int): Bitmap {
         var startX = 0
         loop@ for (x in 0 until width) {
