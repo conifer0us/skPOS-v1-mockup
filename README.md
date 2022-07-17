@@ -57,7 +57,7 @@ Order formats can be thought of as hierarchies. The highest level of the hierarc
 
 Many submenus can be added for different purposes, but only one will be duplicated when an item is added to the order. In other words, all menu items must fall under one submenu which can be duplicated. The key of the submenu that should be used to represent menu items can be specified by the "ItemKey" key at the base of the order format hierarchy. 
 
-Every level of the order format hierarchy must have the "title" attribute set to a string that can be displayed by the ordering device. IDs are determined by the keys for different elements in the submenu. These IDs should be unique, or undefined behavior may be reached. 
+Every level of the order format hierarchy must have the "title" attribute set to a string that can be displayed by the ordering device. IDs are determined by the keys for different elements in the submenu. These IDs should be unique, or undefined behavior may be reached. In addition, the highest level of the order format should have the id attribute set. The highest level of the hierarchy must also have the "PriorityItem" key set to the id of the submenu that should be duplicated if a new item is added. Title attributes are just strings and therefore may contain spaces. IDs cannot contain spaces.
 
 The levels of the hierarchy after the base work slightly differently. Each submenu of the order can have different menu elements attached to it. The valid types of menu elements are "Type", "ChooseOne", "LightHeavyExtra", "ChooseMultiple", or "Categories." The details of each of these menu elements are specified below:
 
