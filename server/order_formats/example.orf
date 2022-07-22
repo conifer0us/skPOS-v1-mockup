@@ -23,19 +23,44 @@
                     "title" : "Drink Size",
                     "id" : "drinkSize", 
                     "ChooseFrom" : ["Medium", "Large"]
-                }
-
-                "ChooseOne" : {
-                    "title" : "Drink Type",
-                    "id" : "drinkType",
-                    "ChooseFrom" : []
-                }
+                }, 
 
                 "LightNormalExtra" : {
                     "title" : "Ice Amount", 
                     "id" : "iceAmount",
                     "ChooseFrom" : ["Ice"],
                     "ExcludeFromEverything" : []
+                },
+
+                "Categories" : {
+                    "title" : "Drink Type (Mixed or Single)",
+                    "id" : "drinkMixedOrSingle",
+
+                    "SingleDrink" : {
+                        "title" : "Single Drink Type",
+
+                        "ChooseOne" : {
+                            "title" : "Drink Type",
+                            "id" : "drinkType",
+                            "ChooseFrom" : []
+                        }
+                    }
+
+                    "MixedDrink" : {
+                        "title" : "Mixed Drink",
+
+                        "ChooseOne" : {
+                            "title" : "Drink 1",
+                            "id" : "drinkType",
+                            "ChooseFrom" : []
+                        }
+
+                        ChooseOne" : {
+                            "title" : "Drink 2",
+                            "id" : "drinkType",
+                            "ChooseFrom" : []
+                        }
+                    }
                 }
             }
 
@@ -50,6 +75,8 @@
 
                 
             }
+
+            
         }
     }
 }
