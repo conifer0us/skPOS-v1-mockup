@@ -59,5 +59,5 @@ class OrderFormats:
     def getCurrentFormatID(self) -> str:
         return self.currentFormatID
 
-    def getFormatByID(self, ID: str) -> json:
+    def getFormatByID(self, ID: str):
         return json.load("./{}/{}".format(self.ORDER_FORMAT_DIRECTORY, self.order_format_db[ID]))

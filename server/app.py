@@ -10,15 +10,15 @@ app_port = 443
 app = Flask(__name__)
 
 # Sets up Authenticator Class to handle device and admin panel authentication
-auth = Authenticator()
+auth = Authenticator.Authenticator()
 
 # Sets up the Order Format DB in the form of an OrderFormats object
-formatHandler = OrderFormats("example.orf")
+formatHandler = OrderFormats.OrderFormats("example.orf")
 
 # Returns a Basic skPOS Welcome Page
 @app.route("/servertest", methods=['GET'])
 def appInformation():
-	return jsonify({"message": "Welcome to skPOS"}), 200
+	return jsonify({"msg": "Welcome to skPOS"}), 200
 
 # Provides a Developer Login Page (Secured by Admin Username and Password configured at system initialization)
 @app.route("/developerlogin", methods=['GET', 'POST'])
@@ -67,12 +67,12 @@ def logOutAdmin():
 @app.route("/registerOrderDevice", methods=['POST'])
 def registerOrderDevice(): 
 	if not auth.isAdmin(request):
-		return jsonify({"err", "Access Denied"}), 401
+		return jsonify({"err": "Access Denied"}), 401
 	submittedDeviceID = request.json["deviceID"]
 	if auth.isRegisteredDevice(request):
-		return jsonify({"err", "Device Already Registered"}), 409
+		return jsonify({"err": "Device Already Registered"}), 409
 	if len(submittedDeviceID) != 256:
-		return jsonify({"err", "Server Could Not Process Device ID"}), 500
+		return jsonify({"err": "Server Could Not Process Device ID"}), 500
 	else: 
 		auth.addOrderingDeviceToDB(submittedDeviceID)
 		return "", 200
@@ -83,9 +83,28 @@ def registerOrderDevice():
 @app.route("/checkDeviceRegistration", methods=["POST"])
 def checkDeviceRegistration():
 	if (auth.isRegisteredDevice(request)):
-		return "Device is Registered!", 200
+		return jsonify({"msg":"Device is Registered!"}), 200
 	else:
-		return "Your Device has not been Registered", 200
+		return jsonify({"err":"Your Device has not been Registered"}), 200
+
+# Delivers the current Order Format to the Ordering Device; must have the deviceID key set to a valid device ID
+@app.route("/currentOrderFormat", methods=["GET"])
+def getCurrentOrderFormat():
+	if (auth.isRegisteredDevice(request)):
+		return jsonify({"ID":formatHandler.getCurrentFormatID()}), 200
+	else:
+		return jsonify({"err":"You do not have permission to access that resource."}), 400
+
+# Delivers order format data for a specific format ID; the deviceID key must be set to an authorized device, and the orderID key set to a valid order ID
+@app.route("/formatDataByID", methods=["GET"])
+def getFormatDataByID():
+	if (auth.isRegisteredDevice(request)):
+		try:
+			return formatHandler.getFormatByID(request.json["orderID"]), 200
+		except:
+			return jsonify({"err", "There was a problem retrieving your order format."}), 500
+	else:
+		return jsonify({"err", "You do not have permission to access that resource."}), 400
 
 # Runs the Flask Application on Port 443 
 if __name__ == "__main__":

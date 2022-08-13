@@ -47,8 +47,8 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
     // authenticate: indicates whether an authentication cookie should be added to the request body
     // onCompletion: a method that will run on the UI thread if the connection completes successfully (this message is supplied with a JSON response from the server as an argument)
     // onFailure: a method that will run on the UI thread if the connection fails (this method is supplied a string with an error message as an argument)
-    private fun asyncRequest(uri : String = "", dest : String? = null, port : Int = -1, method : String = "GET", data : String = "", authenticate : Boolean = true,
-                     onCompletion: (resp : JSONObject?) -> Unit, onFailure: (errormsg : String?) -> Unit) {
+    private fun asyncRequest(uri : String = "", dest : String? = null, port : Int = -1, method : String = "GET", data : JSONObject = JSONObject(), authenticate : Boolean = true,
+                             onCompletion: (resp : JSONObject?) -> Unit, onFailure: (errormsg : String?) -> Unit) {
         var dest = dest
         var port = port
         if (dest == null) {
@@ -59,7 +59,7 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
         }
         val url : String = "%s%s%s".format(dest, formatURI(uri), formatPort(port))
         val httpmethod : Int = httpMethodFromString(method)
-        val bodyJSON : JSONObject = buildBodyText(data, authenticate)
+        val bodyJSON : JSONObject = buildBodyJSON(data, authenticate)
         val jsonReq : JsonObjectRequest = object : JsonObjectRequest(
             httpmethod, url, bodyJSON,
             { response ->  activityObject.runOnUiThread {onCompletion(response)} },
@@ -102,16 +102,10 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
         }
     }
 
-    private fun buildBodyText(data : String, authenticate : Boolean) : JSONObject {
-        val dataJSON = JSONObject()
-        dataJSON.put("body", data)
-        return buildBodyText(dataJSON, authenticate)
-    }
-
-    private fun buildBodyText(data : JSONObject, authenticate: Boolean) : JSONObject {
+    private fun buildBodyJSON(data : JSONObject, authenticate: Boolean) : JSONObject {
         if (authenticate) {
             val cookie : String = getCookieVal()!!
-            data.put("cookie", cookie)
+            data.put("deviceID", cookie)
         }
         return data
     }
