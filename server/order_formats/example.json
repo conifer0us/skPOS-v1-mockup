@@ -1,12 +1,10 @@
-# TODO : Add options for Drinks and Chips
-
 {
     "title" : "8 Mile Order Format", 
     "id" : "EightMileFormat",
     "PriorityItem" : "OrderItems",
 
     "OrderMetaInformation" : {
-        "title" : "Specify Information About the Order",
+        "title" : "Specify Information About the Order"
     },
 
     "OrderItems" : {
@@ -17,7 +15,7 @@
             "title" : "Type of Order",
             
             "Drink" : {
-                "title" : "Drink"
+                "title" : "Drink",
 
                 "ChooseOne" : {
                     "title" : "Drink Size",
@@ -44,7 +42,7 @@
                             "id" : "drinkType",
                             "ChooseFrom" : []
                         }
-                    }
+                    },
 
                     "MixedDrink" : {
                         "title" : "Mixed Drink",
@@ -53,27 +51,25 @@
                             "title" : "Drink 1",
                             "id" : "drinkType",
                             "ChooseFrom" : []
-                        }
+                        },
 
-                        ChooseOne" : {
+                        "ChooseOne" : {
                             "title" : "Drink 2",
                             "id" : "drinkType",
                             "ChooseFrom" : []
                         }
                     }
                 }
-            }
+            },
 
             "Chip" : {
                 "title" : "Chip Bag",
 
                 "ChooseOne" : []
-            }
+            },
 
             "GeneralSandwich" : {
-                "title" : "Sandwich", 
-
-                
+                "title" : "Sandwich"
             }
 
             

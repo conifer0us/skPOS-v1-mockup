@@ -14,43 +14,52 @@ getFormatByID: Returns the JSON data that corresponds to an order format ID
 getCurrentFormatID: Returns the ID of the order format currently being used by the server.
 """
 
+from fileinput import filename
 import json
 from os import listdir
 from static_definitions import hash
 
 class OrderFormats:
     ORDER_FORMAT_DIRECTORY = "order_formats"
+    ORDER_FORMAT_FILE_EXTENSION = ".json"
     order_format_db = {}
-    currentFormatID : str
+    currentFormatID : str = None
 
     def __init__(self, default_format : str) -> None:
         first_valid_file_id = ""
         for file in listdir("./{}".format(self.ORDER_FORMAT_DIRECTORY)):
-            if not file.endswith(".orf"):
+            if not file.endswith(self.ORDER_FORMAT_FILE_EXTENSION):
                 continue
             fileID = self.isFormatFileValid(file)
-            if fileID:
+            if fileID != "":
                 if first_valid_file_id == "":
                     first_valid_file_id = fileID
                 self.addFormatToDB(fileID, file)
                 if file == default_format:
                     self.currentFormatID = fileID
+            else: 
+                print("{} is not a valid order format".format(file))
         if self.currentFormatID is None and first_valid_file_id != "":
             self.currentFormatID = first_valid_file_id
         else: 
-            raise AssertionError("Your Program Cannot Start Because You Do Not Have Any Valid Order Formats.\nYou can fix this error by ensuring there is a properly made order format in the proper directory.")
+            raise AssertionError("No Valid Order Formats Found. Prgram Cannot Start.")
 
     def isFormatFileValid(self, fileName : str) -> str:
-        json_data = json()
         try:
-            json_data = json.load("./{}/{}".format(self.ORDER_FORMAT_DIRECTORY, fileName))
-        except:
+            format_path = "./{}/{}".format(self.ORDER_FORMAT_DIRECTORY, fileName)
+            print(format_path)
+            json_data = {}
+            with open(format_path, 'r') as json_file_data:
+                json_data = json.load(json_file_data)
+            if self.isFormatJSONValid(json_data):
+                return hash(json.dumps(json_data))
             return ""
-        if self.isFormatJSONValid(json_data):
-            return hash(json.dumps(json_data))
-        return ""
+        except Exception as e:
+            print("There was an error converting your file ({}) into valid JSON data. Error Message: ".format(fileName))
+            print(e.with_traceback())
+            return ""
 
-    def isFormatJSONValid(formatJSONData : json) -> bool:
+    def isFormatJSONValid(formatJSONData) -> bool:
         return True
 
     def addFormatToDB(self, ID : str, filename : str):

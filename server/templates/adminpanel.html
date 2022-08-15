@@ -95,16 +95,12 @@
                 xhr.send(JSON.stringify({"deviceID": deviceID}))
             }
 
-            function documentLoad() {
-                
-            }
-
             function startScanningForDevices() {
                 const ScannerElement = "dummy-qr-scanner";
 
                 onScanSuccess = function(decodedText, decodedResult) {
                     const deviceID = decodedText;
-                    if (confirm(`Register device with ID ${deviceID.slice(0, 10) + "..."}`)) {
+                    if (confirm(`Register device with ID ${deviceID.slice(0, 10) + "..."}?`)) {
                         registerDeviceCode(decodedText);
                         QRScanner.stop()
                     }
@@ -120,6 +116,11 @@
                     false
                 )
                 QRScanner.render(onScanSuccess, onScanFailure)
+            }
+
+
+            function documentLoad() {
+                
             }
         </script>
     </head>
