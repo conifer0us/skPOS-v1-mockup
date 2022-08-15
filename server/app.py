@@ -4,7 +4,7 @@ import Authenticator
 import OrderFormats
 
 # Port that Flask Application will listen on.
-app_port = 443
+app_port = 80
 
 # Basic Flask Application Creation
 app = Flask(__name__)
@@ -23,7 +23,7 @@ def appInformation():
 # Provides a Developer Login Page (Secured by Admin Username and Password configured at system initialization)
 @app.route("/developerlogin", methods=['GET', 'POST'])
 def developerSignIn():
-	if auth.isAdmin(request):
+	if auth.isAlreadyAdmin(request):
 		return redirect("/adminpanel")
 	elif request.method == 'GET':
 		return render_template("developerlogin.html")
@@ -39,7 +39,7 @@ def developerSignIn():
 # Returns the adminpanel HTML file; Must have a valid login cookie to visit this page
 @app.route("/adminpanel", methods=['GET'])
 def returnAdminPanel():
-	if auth.isAdmin(request):
+	if auth.isAlreadyAdmin(request):
 		return render_template("adminpanel.html")
 	return redirect("/developerlogin", 302)
 

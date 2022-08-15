@@ -47,7 +47,6 @@ class OrderFormats:
     def isFormatFileValid(self, fileName : str) -> str:
         try:
             format_path = "./{}/{}".format(self.ORDER_FORMAT_DIRECTORY, fileName)
-            print(format_path)
             json_data = {}
             with open(format_path, 'r') as json_file_data:
                 json_data = json.load(json_file_data)
@@ -59,7 +58,7 @@ class OrderFormats:
             print(e.with_traceback())
             return ""
 
-    def isFormatJSONValid(formatJSONData) -> bool:
+    def isFormatJSONValid(self, formatJSONData) -> bool:
         return True
 
     def addFormatToDB(self, ID : str, filename : str):
