@@ -74,12 +74,16 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
         requestQueue.add(jsonReq)
     }
 
+    fun isDeviceConnected(onCompletion: (resp: JSONObject?) -> Unit, onFailure: (errormsg: String?) -> Unit) {
+        asyncRequest(dest = JSONTESTRESOURCE, port = -2, authenticate = false, onCompletion = onCompletion, onFailure = onFailure)
+    }
+
     fun isServerUp(onCompletion: (resp: JSONObject?) -> Unit, onFailure: (errormsg: String?) -> Unit) {
         asyncRequest(uri = "/servertest", authenticate = false, onCompletion = onCompletion, onFailure = onFailure)
     }
 
-    fun isDeviceConnected(onCompletion: (resp: JSONObject?) -> Unit, onFailure: (errormsg: String?) -> Unit) {
-        asyncRequest(dest = JSONTESTRESOURCE, port = -2, authenticate = false, onCompletion = onCompletion, onFailure = onFailure)
+    fun isDeviceRegistered(onCompletion: (resp: JSONObject?) -> Unit, onFailure: (errormsg: String?) -> Unit) {
+        asyncRequest(uri = "/checkDeviceRegistration", authenticate = true, onCompletion = onCompletion, onFailure = onFailure)
     }
 
     private fun httpMethodFromString(methodString : String) : Int {

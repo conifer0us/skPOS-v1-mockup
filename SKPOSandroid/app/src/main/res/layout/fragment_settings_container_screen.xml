@@ -33,6 +33,15 @@
                 />
 
             <Button
+                android:id="@+id/TestDeviceConnection"
+                android:text="@string/ConnectionTestButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                />
+
+            <Button
                 android:id="@+id/TestServerConnection"
                 android:text="@string/ServerTestButton"
                 android:layout_width="wrap_content"

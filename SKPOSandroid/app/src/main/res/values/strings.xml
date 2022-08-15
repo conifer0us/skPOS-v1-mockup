@@ -25,8 +25,9 @@
     <string name="ServerIPPrompt">Server IP</string>
     <string name="ServerPortPrompt">Server Port</string>
     <string name="QRDescription">Use the QR Code to Register This Device</string>
-    <string name="ServerTestButton">Test Server Connection</string>
+    <string name="ServerTestButton">Test Server Status</string>
     <string name="RegistrationCheckButton">Check Device Registration</string>
+    <string name="ConnectionTestButton">Check Device Connection</string>
 
     <!-- Image Content Description Values -->
     <string name="logoContentDescription">SKPOS Logo</string>

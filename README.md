@@ -47,7 +47,7 @@ Administrators who successfully login will be redirected to the admin dashboard 
 
 ### Order Formats: Customizing Your Software
 
-Order formats are files that define what types of items and ingredients can be included with an order. These should be put in your server's order_formats directory. Order formats are specified with JSON in .orf files. 
+Order formats are files that define what types of items and ingredients can be included with an order. These should be put in your server's order_formats directory. Order formats are specified with JSON files. 
 
 An order format is crucial in the ordering process. When an order is placed, a registered tablet communicates with the server to retrieve the currently used order format. The menu for order placement is then dynamically generated based on the order format received. This order format will then be stored on the ordering device. When the order is sent to the server, the tablet will send JSON data corresponding to the order format, which the server can process. 
 
