@@ -25,11 +25,11 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
         activityObject = currentActivity
     }
 
-    private fun getServerPort() : Int{
+    private fun getServerPort() : Int {
         return settingsManagerObject.getServerPort()
     }
 
-    private fun getServerIP() : String? {
+    private fun getServerIP() : String {
         return settingsManagerObject.getServerIP()
     }
 
@@ -52,12 +52,17 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
         var dest = dest
         var port = port
         if (dest == null) {
-            dest = getServerIP()
+            dest = this.getServerIP()
         }
         if (port == -1) {
-            port = getServerPort()
+            try {
+                port = this.getServerPort()
+            } catch (e : Exception) {
+                onFailure(e.message)
+                return
+            }
         }
-        val url : String = "%s%s%s".format(dest, formatURI(uri), formatPort(port))
+        val url = "${dest}${formatPort(port)}${formatURI(uri)}"
         val httpmethod : Int = httpMethodFromString(method)
         val bodyJSON : JSONObject = buildBodyJSON(data, authenticate)
         val jsonReq : JsonObjectRequest = object : JsonObjectRequest(
@@ -71,6 +76,7 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
                 return resp
             }
         }
+        jsonReq.setShouldCache(false)
         requestQueue.add(jsonReq)
     }
 
@@ -123,7 +129,6 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
     }
 
     private fun formatPort(input : Int) : String {
-        var input = input
         return if (input < 0) {
             ""
         } else {

@@ -8,14 +8,13 @@
 
     <!-- StartMenu Fragment Strings -->
     <string name="WelcomeText">Welcome to the SKPOS Ordering System</string>
-    <string name="ConfigCheckingText">Checking Device Configuration...</string>
+    <string name="ConfigCheckingText">Checking Device Configuration…</string>
     <string name="NewOrderButtonText">Start New Order</string>
     <string name="UnfinishedOrderButtonText">Unfinished Orders</string>
     <string name="PreviousOrderButtonText">Previous Orders</string>
     <string name="SettingsButtonText">Device Settings</string>
 
     <!-- Configuration Strings for the SettingsManager Class-->
-    <string name="access_key_file_name">AccessStringFileName</string>
     <string name="access_key_pref_key">SecretAccessKey</string>
     <string name="port_pref_key">ServerPort</string>
     <string name="IP_pref_key">ServerIP</string>
