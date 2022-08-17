@@ -48,7 +48,7 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
     // onCompletion: a method that will run on the UI thread if the connection completes successfully (this message is supplied with a JSON response from the server as an argument)
     // onFailure: a method that will run on the UI thread if the connection fails (this method is supplied a string with an error message as an argument)
     private fun asyncRequest(uri : String = "", dest : String? = null, port : Int = -1, method : String = "GET", data : JSONObject = JSONObject(), authenticate : Boolean = true,
-                             onCompletion: (resp : JSONObject?) -> Unit, onFailure: (errormsg : String?) -> Unit) {
+                             onCompletion: (resp : JSONObject) -> Unit, onFailure: (errormsg : String) -> Unit) {
         var dest = dest
         var port = port
         if (dest == null) {
@@ -58,7 +58,7 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
             try {
                 port = this.getServerPort()
             } catch (e : Exception) {
-                onFailure(e.message)
+                onFailure(e.message ?: "No Message Supplied")
                 return
             }
         }
@@ -68,7 +68,10 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
         val jsonReq : JsonObjectRequest = object : JsonObjectRequest(
             httpmethod, url, bodyJSON,
             { response ->  activityObject.runOnUiThread {onCompletion(response)} },
-            { error -> activityObject.runOnUiThread {onFailure(error.message)} }
+            { error -> activityObject.runOnUiThread {onFailure(
+                // Builds String for Error Messages When Network Communication Fails
+                error.toString() + "\nStatus Code: ${error.networkResponse.statusCode}\n\nServer Response:\n${String(error.networkResponse.data)}"
+            )} }
         ) {
             override fun parseNetworkResponse(response: NetworkResponse?): Response<JSONObject> {
                 val resp = super.parseNetworkResponse(response)
@@ -80,16 +83,16 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
         requestQueue.add(jsonReq)
     }
 
-    fun isDeviceConnected(onCompletion: (resp: JSONObject?) -> Unit, onFailure: (errormsg: String?) -> Unit) {
+    fun isDeviceConnected(onCompletion: (resp: JSONObject) -> Unit, onFailure: (errormsg: String) -> Unit) {
         asyncRequest(dest = JSONTESTRESOURCE, port = -2, authenticate = false, onCompletion = onCompletion, onFailure = onFailure)
     }
 
-    fun isServerUp(onCompletion: (resp: JSONObject?) -> Unit, onFailure: (errormsg: String?) -> Unit) {
+    fun isServerUp(onCompletion: (resp: JSONObject) -> Unit, onFailure: (errormsg: String) -> Unit) {
         asyncRequest(uri = "/servertest", authenticate = false, onCompletion = onCompletion, onFailure = onFailure)
     }
 
-    fun isDeviceRegistered(onCompletion: (resp: JSONObject?) -> Unit, onFailure: (errormsg: String?) -> Unit) {
-        asyncRequest(uri = "/checkDeviceRegistration", authenticate = true, onCompletion = onCompletion, onFailure = onFailure)
+    fun isDeviceRegistered(onCompletion: (resp: JSONObject) -> Unit, onFailure: (errormsg: String) -> Unit) {
+        asyncRequest(uri = "/checkDeviceRegistration", method = "POST", authenticate = true, onCompletion = onCompletion, onFailure = onFailure)
     }
 
     private fun httpMethodFromString(methodString : String) : Int {

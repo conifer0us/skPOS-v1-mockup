@@ -62,31 +62,31 @@ class SettingsContainerScreen : Fragment() {
 
     private fun checkDeviceConnection() {
         connectionHandler.isDeviceConnected(onCompletion = { resp ->
-            showDialogBox("Your Internet is Connected!", "Server Responded with the status code ${resp!!.getInt("statusCode")}")
+            showDialogBox("Your Internet is Connected!", "Server Responded with the status code ${resp.getInt("statusCode")}")
         }, onFailure = { errormsg ->
-            showDialogBox("Your Internet is Not Working. Error:", errormsg!!)
+            showDialogBox("Your Internet is Not Working. Error:", errormsg)
         })
     }
 
     private fun checkServerConnection() {
         connectionHandler.isServerUp(onCompletion = { resp ->
-            showDialogBox("The Server is Up!", resp!!.getString("msg"))
+            showDialogBox("The Server is Up!", resp.getString("msg"))
         }, onFailure = {errormsg ->
-            showDialogBox("The Server is Down. Error:", errormsg!!)
+            showDialogBox("The Server is Down. Error:", errormsg)
         })
     }
 
     private fun checkDeviceRegistration() {
         connectionHandler.isDeviceRegistered(onCompletion = {resp ->
-            if (resp!!.getString("err") != "") {
+            if (resp.has("err")) {
                 showDialogBox("Your Device Is Not Registered. Message:", resp.getString("err"))
-            } else if (resp.getString("msg") != "") {
+            } else if (resp.has("msg")) {
                 showDialogBox("Your Device is Registered! Message:", resp.getString("msg"))
             } else {
                 showDialogBox("Something Went Wrong.", "Neither the positive msg flag or negative err flag were set by the server.")
             }
         }, onFailure = { errormsg ->
-            showDialogBox("There was an Error. Message:", errormsg!!)
+            showDialogBox("Oops! Your Device Can't Connect or Is Not Registered! Message:", errormsg)
         })
     }
 
