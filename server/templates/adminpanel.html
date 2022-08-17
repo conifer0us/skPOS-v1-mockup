@@ -78,6 +78,7 @@
                 xhr.send();
             }
 
+            // Function that handles Device Registration with the Server for a Specific ID
             function registerDeviceCode(deviceID) {
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "/registerOrderDevice", true);
@@ -95,27 +96,28 @@
                 xhr.send(JSON.stringify({"deviceID": deviceID}))
             }
 
+            // Function that Handles QR Code Scanning
             function startScanningForDevices() {
                 const ScannerElement = "dummy-qr-scanner";
 
                 onScanSuccess = function(decodedText, decodedResult) {
-                    QRScanner.stop()
+                    QRScanner.clear()
                     const deviceID = decodedText;
                     if (confirm(`Register device with ID ${deviceID.slice(0, 10) + "..."}?`)) {
                         registerDeviceCode(decodedText);
                     }
                 }
 
-                onScanFailure = function(error) {
-                    console.log(`Error: ${error}`);
-                }
+                //onScanFailure = function(error) {
+                //    console.log(`Error: ${error}`);
+                //}
 
                 let QRScanner = new Html5QrcodeScanner(
                     ScannerElement,
                     {fps : 10, qrbox: {width: 250, height: 250}},
                     false
                 )
-                QRScanner.render(onScanSuccess, onScanFailure)
+                QRScanner.render(onScanSuccess)
             }
 
 
