@@ -55,7 +55,7 @@ def returnFavicon():
 # Removes all valid login cookies and forces admins to log back in
 @app.route("/adminlogout", methods=["POST"])
 def logOutAdmin():
-	if not auth.isAdmin(request):
+	if not auth.isAlreadyAdmin(request):
 		return "", 401
 	global adminCookies
 	adminCookies = []
@@ -66,7 +66,7 @@ def logOutAdmin():
 # Registers an Ordering Device (Possible from the Developer Dashboard)
 @app.route("/registerOrderDevice", methods=['POST'])
 def registerOrderDevice(): 
-	if not auth.isAdmin(request):
+	if not auth.isAlreadyAdmin(request):
 		return jsonify({"err": "Access Denied"}), 401
 	submittedDeviceID = request.json["deviceID"]
 	if auth.isRegisteredDevice(request):

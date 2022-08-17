@@ -1,7 +1,7 @@
 from static_definitions import hash
 from os.path import exists
+from os import makedirs
 from flask import request
-import json
 
 class Authenticator:
 
@@ -10,16 +10,25 @@ class Authenticator:
 	# Creates Non-Persistent Admin Cookie Storage (hashed with salt)
 	adminCookies = []
 
+	# Defines the Directory to Store Data Specific to this Server, including admin login information and Device IDs
+
+	server_storage_directory = "./serverdata"
+
 	# Defines the Name of the file to store Device IDs in
-	deviceRegistrationFile = "devices.db"
+	deviceRegistrationFile = "{}/devices.db".format(server_storage_directory)
 
 	# Stores admin usernames and hashed passwords
-	adminLoginFile = "admin_login.db"
+	adminLoginFile = "{}/admin_login.db".format(server_storage_directory)
 	
 	# Used when hashing
 	salt = "naohoinvoaisouaoiweniojfoihas88920903"
 
 	def __init__(self) -> None:
+		if not exists(self.server_storage_directory):
+			makedirs(self.server_storage_directory)
+		if not exists(self.deviceRegistrationFile):
+			with open(self.deviceRegistrationFile, "w+") as _:
+				print("No device ID DB found. Creating one at {}".format(self.deviceRegistrationFile))
 		if not exists(self.adminLoginFile):
 			self.addAdminLogin()
 

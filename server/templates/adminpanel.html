@@ -89,7 +89,7 @@
                     else if (this.status == 200) {
                         alert("Your Device has been Registered!");
                     } else {
-                        alert("Error:" + JSON.parse(this.responseText)["err"]);
+                        alert("Error: " + JSON.parse(this.responseText)["err"]);
                     }
                 };
                 xhr.send(JSON.stringify({"deviceID": deviceID}))
@@ -99,10 +99,10 @@
                 const ScannerElement = "dummy-qr-scanner";
 
                 onScanSuccess = function(decodedText, decodedResult) {
+                    QRScanner.stop()
                     const deviceID = decodedText;
                     if (confirm(`Register device with ID ${deviceID.slice(0, 10) + "..."}?`)) {
                         registerDeviceCode(decodedText);
-                        QRScanner.stop()
                     }
                 }
 
