@@ -1,7 +1,7 @@
 {
     "title" : "8 Mile Order Format", 
     "id" : "EightMileFormat",
-    "PriorityItem" : "OrderItems",
+    "MainItemSubmenu" : "OrderItems",
 
     "OrderMetaInformation" : {
         "title" : "Specify Information About the Order"
@@ -10,36 +10,35 @@
     "OrderItems" : {
         "title": "Order Item", 
 
-        "Categories": {
-            "id" : "ItemType", 
-            "title" : "Type of Order",
+        "MenuItemTypes": {
+            "type": "Categories",
+            "title" : "Item Type",
             
             "Drink" : {
                 "title" : "Drink",
 
-                "ChooseOne" : {
+                "DrinkSize" : {
                     "title" : "Drink Size",
-                    "id" : "drinkSize", 
+                    "ElementType" : "ChooseOne", 
                     "ChooseFrom" : ["Medium", "Large"]
                 }, 
 
-                "LightNormalExtra" : {
+                "IceAmount" : {
                     "title" : "Ice Amount", 
-                    "id" : "iceAmount",
-                    "ChooseFrom" : ["Ice"],
-                    "ExcludeFromEverything" : []
+                    "ElementType" : "LightNormalExtra",
+                    "ChooseFrom" : ["Ice"]
                 },
 
-                "Categories" : {
+                "DrinkMixedOrSingle" : {
                     "title" : "Drink Type (Mixed or Single)",
-                    "id" : "drinkMixedOrSingle",
+                    "ElementType" : "Categories",
 
                     "SingleDrink" : {
                         "title" : "Single Drink Type",
 
-                        "ChooseOne" : {
+                        "SingleDrinkType" : {
                             "title" : "Drink Type",
-                            "id" : "drinkType",
+                            "ElementType" : "ChooseFrom",
                             "ChooseFrom" : []
                         }
                     },
@@ -47,15 +46,15 @@
                     "MixedDrink" : {
                         "title" : "Mixed Drink",
 
-                        "ChooseOne" : {
+                        "MixedDrinkType1" : {
                             "title" : "Drink 1",
-                            "id" : "drinkType",
+                            "ElementType" : "ChooseOne",
                             "ChooseFrom" : []
                         },
 
-                        "ChooseOne" : {
+                        "MixedDrinkType2" : {
                             "title" : "Drink 2",
-                            "id" : "drinkType",
+                            "ElementType" : "ChooseOne",
                             "ChooseFrom" : []
                         }
                     }
@@ -63,16 +62,12 @@
             },
 
             "Chip" : {
-                "title" : "Chip Bag",
-
-                "ChooseOne" : []
+                "title" : "Chip Bag"
             },
 
             "GeneralSandwich" : {
                 "title" : "Sandwich"
             }
-
-            
         }
     }
 }
