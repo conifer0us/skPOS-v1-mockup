@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_StartMenu_to_settingsContainerScreen"
             app:destination="@id/settingsContainerScreen" />
+        <action
+            android:id="@+id/action_StartMenu_to_newOrderFragment"
+            app:destination="@id/newOrderFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsContainerScreen"
         android:name="com.subkingofmobile.skpos_android.SettingsContainerScreen"
         android:label="@string/SettingsLabel"
         tools:layout="@layout/fragment_settings_container_screen" />
+    <fragment
+        android:id="@+id/newOrderFragment"
+        android:name="com.subkingofmobile.skpos_android.NewOrderFragment"
+        android:label="new_order_fragment"
+        tools:layout="@layout/new_order_fragment" />
 </navigation>

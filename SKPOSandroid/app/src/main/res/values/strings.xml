@@ -31,4 +31,7 @@
     <!-- Image Content Description Values -->
     <string name="logoContentDescription">SKPOS Logo</string>
     <string name="QRStringDescription">Cookie QR Code</string>
+
+    <!-- Order Format Page Strings -->
+    <string name="new_order_string">New Order</string>
 </resources>

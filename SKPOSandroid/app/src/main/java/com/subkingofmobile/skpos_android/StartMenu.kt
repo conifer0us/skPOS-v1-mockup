@@ -34,7 +34,7 @@ class StartMenu : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.NewOrderButton).setOnClickListener {
-            displayDevLaziness()
+            findNavController().navigate(R.id.action_StartMenu_to_newOrderFragment)
         }
 
         view.findViewById<Button>(R.id.UnfinishedOrderButton).setOnClickListener {
