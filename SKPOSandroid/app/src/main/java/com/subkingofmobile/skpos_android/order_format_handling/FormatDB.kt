@@ -20,10 +20,10 @@ class FormatDB(appContext : Context, currentActivity : Activity) {
     }
 
     fun getCurrentFormatData(onCompletion: (formatData : JSONObject) -> Unit, onFailure: (errormsg : String) -> Unit, exitPage : Boolean) {
-        
+
     }
 
     fun getFormatDataByID(onCompletion: (formatData: JSONObject) -> Unit, onFailure: (errormsg: String) -> Unit) {
-
+        
     }
 }
