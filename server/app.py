@@ -106,7 +106,7 @@ def getFormatDataByID():
 	else:
 		return jsonify({"err", "You do not have permission to access that resource."}), 400
 
-# Runs the Flask Application on Port 443 
+# Runs the Flask Application on the port specified
 if __name__ == "__main__":
 	import sys
 	if len(sys.argv) < 2:

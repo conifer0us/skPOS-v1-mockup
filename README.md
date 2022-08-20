@@ -41,8 +41,18 @@ Administrators who successfully login will be redirected to the admin dashboard 
 * /checkDeviceRegistration : Checks if a device with a certain ID has been registered with the server using the registerOrderDevice endpoint
     * Request Types Accepted: POST
     * Request Requirements: Request body must be in JSON format with the "deviceID" key set to a String that stores the device ID
-    * Return Details: Returns a simple string with a message describing if the device has been registered
+    * Return Details: Returns JSON data with a message describing if the device has been registered (this is under the "msg" key if the device has been registered and under the "err" key if it has not)
     * Authentication Required: No
+* /currentOrderFormat : Gets the current order format ID from the server
+    * Request Types Accepted: GET
+    * Request Requirements: Request body must be in JSON format with the "deviceID" key set to a String that stores a registered device ID
+    * Return Details: Returns JSON data with the "ID" key set to the server's current format ID if the device is registered. If not, it returns JSON data with the "err" key set to a string describing why the format could not be returned
+    * Authentication Required: Yes (JSON data must contain a valid, registered device ID set for the "deviceID" key)
+* /formatDataByID : Gets an order format from the server from an ID
+    * Request Types Accepted: GET
+    * Request Requirements: Request body must be in JSOn format with the "deviceID" key set to a String that stores a registered device ID; the "orderID" key must be set to a valid order ID
+    * Return Details: Returns raw JSON data for the order format. If there is some kind of error or the device hasn't been registered, JSON data is sent back to the server with the "err" key set to an error message
+    * Authentication Required: Yes (JSON data must contain a valid, registered device ID set for the "deviceID" key)
 ---
 
 ### Order Formats: Customizing Your Software

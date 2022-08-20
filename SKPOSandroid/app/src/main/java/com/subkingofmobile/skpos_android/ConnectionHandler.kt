@@ -33,7 +33,7 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
         return settingsManagerObject.getServerIP()
     }
 
-    private fun getCookieVal() : String? {
+    private fun getCookieVal() : String {
         return settingsManagerObject.getAccessKey()
     }
 
