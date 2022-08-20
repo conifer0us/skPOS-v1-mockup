@@ -81,10 +81,3 @@ The levels of the hierarchy after the base work slightly differently. Each subme
     * Categories: Contains a set of conditional submenus. They are presented like ChooseOne Options, except they add different options depending on what is selected. The Categories item must contain JSON data formatted so that keys are IDs of category options and the values for those keys are submenu JSON data (including possibly other categories). To specify a "Categories" element, the value of the "ElementType" key must be set to "Categories."
 
 ### Orders that Fit Order Formats
-
-Orders send by registered devices to the server must follow the order format they were specified. There are rules that submitted orders must follow to adhere to the order format. 
-
-All orders must be send to the server with JSON data in the body of the request.
-
-This order JSON data must contain the "deviceID" key set to a valid deviceID, the "orderNo" key set to a valid order number (obtained from the server), and the "orderFormat" key set to the hash of the order format so that the server can process the response. 
-
