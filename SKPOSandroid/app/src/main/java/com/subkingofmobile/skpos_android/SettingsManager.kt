@@ -5,6 +5,7 @@ import kotlin.random.Random
 import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.preference.PreferenceManager
+import org.json.JSONObject
 
 class SettingsManager(applicationContext : Context) {
     private val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
@@ -36,6 +37,10 @@ class SettingsManager(applicationContext : Context) {
         return sharedPreferencesHandle.getString(key, "")!!
     }
 
+    fun getJSONFromKey(key : String) : JSONObject {
+        return JSONObject(getValFromKey(key))
+    }
+
     fun getNumFromKey(key : String) : Int {
         return sharedPreferencesHandle.getInt(key, -1)
     }
@@ -46,9 +51,9 @@ class SettingsManager(applicationContext : Context) {
         prefEditor.apply()
     }
 
-    private fun writeKeyValue(key :String, value : Int) {
+    private fun writeKeyValue(key :String, value : JSONObject) {
         val prefEditor = sharedPreferencesHandle.edit()
-        prefEditor.putInt(key, value)
+        prefEditor.putString(key, value.toString())
         prefEditor.apply()
     }
 
