@@ -47,7 +47,7 @@ class ConnectionHandler(appContext : Context, currentActivity : Activity) {
     // authenticate: indicates whether an authentication cookie should be added to the request body
     // onCompletion: a method that will run on the UI thread if the connection completes successfully (this message is supplied with a JSON response from the server as an argument)
     // onFailure: a method that will run on the UI thread if the connection fails (this method is supplied a string with an error message as an argument)
-    private fun asyncRequest(uri : String = "", dest : String? = null, port : Int = -1, method : String = "GET", data : JSONObject = JSONObject(), authenticate : Boolean = true,
+    fun asyncRequest(uri : String = "", dest : String? = null, port : Int = -1, method : String = "GET", data : JSONObject = JSONObject(), authenticate : Boolean = true,
                              onCompletion: (resp : JSONObject) -> Unit, onFailure: (errormsg : String) -> Unit) {
         var dest = dest
         var port = port

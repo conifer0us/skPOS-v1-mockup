@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.subkingofmobile.skpos_android.order_format_handling.FormatDB
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +23,9 @@ class NewOrderFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var formatDB : FormatDB
+    private lateinit var dialog : DialogBox
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,6 +41,22 @@ class NewOrderFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.new_order_fragment, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        formatDB = FormatDB(context!!, activity!!)
+        dialog = DialogBox(context!!)
+
+        formatDB.getCurrentFormatID(
+            onLoadID = { formatID ->
+                dialog.showSingleOptionDialogBox("Current Format ID:", formatID)
+            },
+            onConnectionFailure = {errormsg ->  
+                dialog.showSingleOptionDialogBox("Error:", errormsg, {activity!!.finish()})
+            }
+        )
+    }
+
 
     companion object {
         /**

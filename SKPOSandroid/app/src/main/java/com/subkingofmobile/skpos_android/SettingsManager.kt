@@ -45,19 +45,19 @@ class SettingsManager(applicationContext : Context) {
         return sharedPreferencesHandle.getInt(key, -1)
     }
 
-    private fun writeKeyValue(key : String, value : String) {
+    fun writeKeyValue(key : String, value : String) {
         val prefEditor = sharedPreferencesHandle.edit()
         prefEditor.putString(key, value)
         prefEditor.apply()
     }
 
-    private fun writeKeyValue(key :String, value : JSONObject) {
+    fun writeKeyValue(key :String, value : JSONObject) {
         val prefEditor = sharedPreferencesHandle.edit()
         prefEditor.putString(key, value.toString())
         prefEditor.apply()
     }
 
-    private fun keyExists(key : String) : Boolean {
+    fun keyExists(key : String) : Boolean {
         return (key in sharedPreferencesHandle.all)
     }
 

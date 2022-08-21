@@ -1,21 +1,16 @@
 package com.subkingofmobile.skpos_android
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.Matrix
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import net.glxn.qrgen.android.QRCode
-import java.sql.Connection
+import com.subkingofmobile.skpos_android.DialogBox
 
 /**
  * A simple [Fragment] subclass.
@@ -24,6 +19,7 @@ import java.sql.Connection
  */
 class SettingsContainerScreen : Fragment() {
     lateinit var connectionHandler : ConnectionHandler
+    lateinit var dialog : DialogBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +42,7 @@ class SettingsContainerScreen : Fragment() {
         //Create a ConnectionHandler Object for the buttons to use when connecting
         super.onViewCreated(view, savedInstanceState)
         connectionHandler = ConnectionHandler(context!!, activity!!)
+        dialog = DialogBox(context!!)
 
         // Set Button Actions
         view.findViewById<Button>(R.id.TestDeviceConnection).setOnClickListener { checkDeviceConnection() }
@@ -62,37 +59,35 @@ class SettingsContainerScreen : Fragment() {
 
     private fun checkDeviceConnection() {
         connectionHandler.isDeviceConnected(onCompletion = { resp ->
-            showDialogBox("Your Internet is Connected!", "Server Responded with the status code ${resp.getInt("statusCode")}")
+            dialog.showSingleOptionDialogBox("Your Internet is Connected!", "Server Responded with the status code ${resp.getInt("statusCode")}")
         }, onFailure = { errormsg ->
-            showDialogBox("Your Internet is Not Working. Error:", errormsg)
+            dialog.showSingleOptionDialogBox("Your Internet is Not Working. Error:", errormsg)
         })
     }
 
     private fun checkServerConnection() {
         connectionHandler.isServerUp(onCompletion = { resp ->
-            showDialogBox("The Server is Up!", resp.getString("msg"))
+            dialog.showSingleOptionDialogBox("The Server is Up!", resp.getString("msg"))
         }, onFailure = {errormsg ->
-            showDialogBox("The Server is Down. Error:", errormsg)
+            dialog.showSingleOptionDialogBox("The Server is Down. Error:", errormsg)
         })
     }
 
     private fun checkDeviceRegistration() {
         connectionHandler.isDeviceRegistered(onCompletion = {resp ->
             if (resp.has("err")) {
-                showDialogBox("Your Device Is Not Registered. Message:", resp.getString("err"))
+                dialog.showSingleOptionDialogBox("Your Device Is Not Registered. Message:", resp.getString("err"))
             } else if (resp.has("msg")) {
-                showDialogBox("Your Device is Registered! Message:", resp.getString("msg"))
+                dialog.showSingleOptionDialogBox("Your Device is Registered! Message:", resp.getString("msg"))
             } else {
-                showDialogBox("Something Went Wrong.", "Neither the positive msg flag or negative err flag were set by the server.")
+                dialog.showSingleOptionDialogBox("Something Went Wrong.", "Neither the positive msg flag or negative err flag were set by the server.")
             }
         }, onFailure = { errormsg ->
-            showDialogBox("Oops! Your Device Can't Connect or Is Not Registered! Message:", errormsg)
+            dialog.showSingleOptionDialogBox("Oops! Your Device Can't Connect or Is Not Registered! Message:", errormsg)
         })
     }
 
-    private fun showDialogBox(DialogTitle : String, DialogMessage : String) {
-        AlertDialog.Builder(context).setTitle(DialogTitle).setMessage(DialogMessage).setPositiveButton("OK", DialogInterface.OnClickListener {dialog, id -> dialog.cancel()}).show()
-    }
+
 
     private fun Bitmap.trimBorders(color: Int): Bitmap {
         var startX = 0
