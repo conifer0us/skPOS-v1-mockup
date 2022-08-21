@@ -19,7 +19,7 @@ class FormatDB(appContext : Context, currentActivity : Activity) {
     }
 
     fun getCurrentFormatID(onLoadID : (ID : String) -> Unit, onConnectionFailure : (errormsg : String) -> Unit) {
-        connectionHandler.asyncRequest(uri="/currentOrderFormat", port=-2, method = "GET", authenticate = true, onCompletion = {
+        connectionHandler.asyncRequest(uri="/currentOrderFormat", port=-2, method = "POST", authenticate = true, onCompletion = {
             resp -> onLoadID(resp.getString("ID"))
         }, onFailure = onConnectionFailure)
     }
@@ -29,7 +29,7 @@ class FormatDB(appContext : Context, currentActivity : Activity) {
             if (settingsManager.keyExists(formatID)) {
                 onLoadFormatData(settingsManager.getJSONFromKey(formatID))
             } else {
-                connectionHandler.asyncRequest(uri = "formatDataByID", port = -2, authenticate = true, data = JSONObject("{'orderID':'${formatID}'}"),
+                connectionHandler.asyncRequest(uri = "formatDataByID", method = "POST", port = -2, authenticate = true, data = JSONObject("{'orderID':'${formatID}'}"),
                 onCompletion = { formatData ->
                     settingsManager.writeKeyValue(formatID, formatData)
                     onLoadFormatData(formatData)

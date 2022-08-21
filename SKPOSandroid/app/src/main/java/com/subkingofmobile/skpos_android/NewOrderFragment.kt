@@ -51,7 +51,7 @@ class NewOrderFragment : Fragment() {
             onLoadID = { formatID ->
                 dialog.showSingleOptionDialogBox("Current Format ID:", formatID)
             },
-            onConnectionFailure = {errormsg ->  
+            onConnectionFailure = {errormsg ->
                 dialog.showSingleOptionDialogBox("Error:", errormsg, {activity!!.finish()})
             }
         )

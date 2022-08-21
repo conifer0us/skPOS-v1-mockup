@@ -88,7 +88,7 @@ def checkDeviceRegistration():
 		return jsonify({"err":"Your Device has not been Registered"}), 200
 
 # Delivers the current Order Format to the Ordering Device; must have the deviceID key set to a valid device ID
-@app.route("/currentOrderFormat", methods=["GET"])
+@app.route("/currentOrderFormat", methods=["POST"])
 def getCurrentOrderFormat():
 	if (auth.isRegisteredDevice(request)):
 		return jsonify({"ID":formatHandler.getCurrentFormatID()}), 200
@@ -96,7 +96,7 @@ def getCurrentOrderFormat():
 		return jsonify({"err":"You do not have permission to access that resource."}), 400
 
 # Delivers order format data for a specific format ID; the deviceID key must be set to an authorized device, and the orderID key set to a valid order ID
-@app.route("/formatDataByID", methods=["GET"])
+@app.route("/formatDataByID", methods=["POST"])
 def getFormatDataByID():
 	if (auth.isRegisteredDevice(request)):
 		try:
