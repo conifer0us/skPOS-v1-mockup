@@ -4,13 +4,8 @@ import android.app.Activity
 import android.content.Context
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.RequestFuture
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
-import java.util.concurrent.ExecutionException
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
 
 class ConnectionHandler(appContext : Context, currentActivity : Activity) {
     private val settingsManagerObject : SettingsManager

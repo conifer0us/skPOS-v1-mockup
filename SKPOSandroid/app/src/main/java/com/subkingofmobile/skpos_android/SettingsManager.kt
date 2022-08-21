@@ -3,7 +3,6 @@ package com.subkingofmobile.skpos_android
 import android.content.Context
 import kotlin.random.Random
 import android.content.SharedPreferences
-import android.content.res.Resources
 import androidx.preference.PreferenceManager
 import org.json.JSONObject
 
