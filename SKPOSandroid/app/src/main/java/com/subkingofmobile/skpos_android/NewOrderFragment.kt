@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import com.subkingofmobile.skpos_android.order_format_handling.FormatDB
 
@@ -52,11 +53,10 @@ class NewOrderFragment : Fragment() {
                 dialog.showSingleOptionDialogBox("Current Format ID:", formatID)
             },
             onConnectionFailure = {errormsg ->
-                dialog.showSingleOptionDialogBox("Error:", errormsg, {activity!!.finish()})
+                dialog.showSingleOptionDialogBox("Error:", errormsg, {activity!!.onBackPressed()})
             }
         )
     }
-
 
     companion object {
         /**
