@@ -1,6 +1,7 @@
 <p align="center"><img src="https://github.com/conifer0us/skPOS/blob/main/server/images/logoDark.svg"></p>
 
 <h3 align="center">skPOS: Sub King's Own Point of Sale Software</h3>
+<h4 align="center">This POS software is archived since a newer version is in development</h4>
 <br />
 
 ### Backend
